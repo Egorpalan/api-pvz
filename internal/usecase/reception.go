@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"github.com/Egorpalan/api-pvz/internal/metrics"
 	"time"
 
 	"github.com/Egorpalan/api-pvz/internal/domain"
@@ -38,6 +39,8 @@ func (u *ReceptionUsecase) Create(pvzID string) (domain.Reception, error) {
 		DateTime: time.Now(),
 		Status:   "in_progress",
 	}
+
+	metrics.ReceptionsCreated.Inc()
 
 	return u.repo.Create(reception)
 }

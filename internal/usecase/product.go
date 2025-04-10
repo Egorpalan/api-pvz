@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"github.com/Egorpalan/api-pvz/internal/metrics"
 	"time"
 
 	"github.com/Egorpalan/api-pvz/internal/domain"
@@ -44,6 +45,8 @@ func (u *ProductUsecase) Add(pvzID, productType string) (domain.Product, error) 
 		DateTime:    time.Now(),
 		Type:        productType,
 	}
+
+	metrics.ProductsCreated.Inc()
 
 	return u.repo.Create(product)
 }

@@ -25,6 +25,7 @@ services:
     container_name: pvz_api
     ports:
       - "8080:8080"
+      - "9000:9000"
     depends_on:
       db:
         condition: service_healthy
@@ -34,6 +35,14 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: pvz_db
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
 
 
 
