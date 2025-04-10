@@ -1,0 +1,43 @@
+avito-shop/
+├── cmd/
+│   └── main.go
+├── config/
+│   └── config.go
+├── internal/
+│   ├── controllers/       # Переименовано из handlers для ясности
+│   ├── middleware/
+│   │   └── auth.go
+│   ├── models/
+│   │   └── models.go
+│   ├── repository/
+│   │   ├── pvz.go         # Репозиторий для ПВЗ
+│   │   ├── receipt.go     # Репозиторий для приёмок
+│   │   └── product.go     # Репозиторий для товаров
+│   ├── services/
+│   │   ├── auth.go        # Сервис авторизации
+│   │   ├── pvz.go         # Сервис ПВЗ
+│   │   └── receipt.go     # Сервис приёмок
+│   └── transport/
+│       └── http/
+│           ├── router.go  # Инициализация роутера chi
+│           └── routes.go  # Все маршруты
+├── migrations/
+│   ├── 001_init_tables.go
+│   └── migrate.go
+├── pkg/
+│   ├── db/
+│   │   └── db.go
+│   ├── jwt/
+│   │   └── jwt.go
+│   └── logger/
+│       └── logger.go
+├── tests/
+│   ├── integration/
+│   └── unit/
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
+├── go.mod
+├── Makefile
+└── README.md
