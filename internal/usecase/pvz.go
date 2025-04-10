@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"github.com/Egorpalan/api-pvz/internal/dto"
 	"time"
 
 	"github.com/Egorpalan/api-pvz/internal/domain"
@@ -38,4 +39,12 @@ func (u *PVZUsecase) Create(city string) (domain.PVZ, error) {
 	}
 
 	return u.repo.Create(pvz)
+}
+
+type PVZReadRepo interface {
+	GetWithReceptionsAndProducts(start, end *time.Time, page, limit int) ([]dto.PVZDTO, error)
+}
+
+func (u *PVZUsecase) GetAllWithDetails(start, end *time.Time, page, limit int) ([]dto.PVZDTO, error) {
+	return u.repo.(PVZReadRepo).GetWithReceptionsAndProducts(start, end, page, limit)
 }

@@ -32,8 +32,13 @@ func main() {
 	productRepo := repository.NewProductRepository(database)
 	productUC := usecase.NewProductUsecase(productRepo)
 
+	userRepo := repository.NewUserRepository(database)
+	authUC := usecase.NewAuthUsecase(userRepo)
+
 	r := chi.NewRouter()
 	r.Post("/dummyLogin", handler.DummyLogin)
+	r.Post("/register", handler.Register(authUC))
+	r.Post("/login", handler.Login(authUC))
 
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.AuthMiddleware("moderator"))
@@ -47,6 +52,11 @@ func main() {
 		r.Post("/products", handler.CreateProduct(productUC))
 		r.Post("/pvz/{pvzId}/delete_last_product", handler.DeleteLastProduct(productUC))
 		r.Post("/pvz/{pvzId}/close_last_reception", handler.CloseLastReception(receptionUC))
+	})
+
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.AuthMiddleware("moderator", "employee"))
+		r.Get("/pvz", handler.GetPVZList(pvzUC))
 	})
 
 	err := http.ListenAndServe(":"+cfg.AppPort, r)

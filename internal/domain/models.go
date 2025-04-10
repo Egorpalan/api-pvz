@@ -21,3 +21,10 @@ type Product struct {
 	DateTime    time.Time `db:"date_time" json:"dateTime"`
 	Type        string    `db:"type" json:"type"`
 }
+
+type User struct {
+	ID       string `db:"id"`
+	Email    string `db:"email"`
+	Password string `db:"password"`
+	Role     string `db:"role"`
+}

@@ -4,5 +4,6 @@
     <file url="file://$PROJECT_DIR$/internal/repository/product.go" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/internal/repository/pvz.go" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/internal/repository/reception.go" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/internal/repository/user.go" dialect="GenericSQL" />
   </component>
 </project>
