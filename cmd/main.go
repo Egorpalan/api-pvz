@@ -1,10 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"github.com/Egorpalan/api-pvz/config"
+	"github.com/Egorpalan/api-pvz/internal/handler"
+	"github.com/Egorpalan/api-pvz/internal/middleware"
+	"github.com/Egorpalan/api-pvz/internal/repository"
+	"github.com/Egorpalan/api-pvz/internal/usecase"
 	"github.com/Egorpalan/api-pvz/pkg/db"
 	"github.com/Egorpalan/api-pvz/pkg/logger"
+	"github.com/go-chi/chi/v5"
 	"log"
 	"net/http"
 )
@@ -12,15 +16,43 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 
-	// Init Logger
 	logger.Init()
 
-	// Init DB
 	database := db.NewPostgresDB(cfg.DB)
 	defer database.Close()
 
-	// TODO: Init router, routes, server handlers
+	// TODO: Init router, routes, server handler
 
+	pvzRepo := repository.NewPVZRepository(database)
+	pvzUC := usecase.NewPVZUsecase(pvzRepo)
+
+	receptionRepo := repository.NewReceptionRepository(database)
+	receptionUC := usecase.NewReceptionUsecase(receptionRepo)
+
+	productRepo := repository.NewProductRepository(database)
+	productUC := usecase.NewProductUsecase(productRepo)
+
+	r := chi.NewRouter()
+	r.Post("/dummyLogin", handler.DummyLogin)
+
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.AuthMiddleware("moderator"))
+		r.Post("/pvz", handler.CreatePVZ(pvzUC))
+	})
+
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.AuthMiddleware("client"))
+
+		r.Post("/receptions", handler.CreateReception(receptionUC))
+		r.Post("/products", handler.CreateProduct(productUC))
+		r.Post("/pvz/{pvzId}/delete_last_product", handler.DeleteLastProduct(productUC))
+		r.Post("/pvz/{pvzId}/close_last_reception", handler.CloseLastReception(receptionUC))
+	})
+
+	err := http.ListenAndServe(":"+cfg.AppPort, r)
+	if err != nil {
+		log.Fatalf("%s", err.Error())
+	}
 	log.Printf("Starting server on port %s...", cfg.AppPort)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", cfg.AppPort), nil))
+
 }
