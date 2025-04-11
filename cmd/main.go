@@ -59,7 +59,7 @@ func main() {
 	})
 
 	r.Group(func(r chi.Router) {
-		r.Use(middleware.AuthMiddleware("moderator", "employee"))
+		r.Use(middleware.AuthMiddleware("moderator", "client"))
 		r.Get("/pvz", handler.GetPVZList(pvzUC))
 	})
 

@@ -34,3 +34,7 @@ compose-up:
 # остановить docker-compose и удалить volume
 compose-down:
 	docker-compose down -v
+
+test:
+	go test -v -coverprofile=coverage.out ./internal/usecase/...
+	go tool cover -func=coverage.out

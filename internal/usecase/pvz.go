@@ -3,7 +3,6 @@ package usecase
 import (
 	"errors"
 	"github.com/Egorpalan/api-pvz/internal/dto"
-	"github.com/Egorpalan/api-pvz/internal/metrics"
 	"time"
 
 	"github.com/Egorpalan/api-pvz/internal/domain"
@@ -38,8 +37,6 @@ func (u *PVZUsecase) Create(city string) (domain.PVZ, error) {
 		City:             city,
 		RegistrationDate: time.Now(),
 	}
-
-	metrics.PVZCreated.Inc()
 
 	return u.repo.Create(pvz)
 }
