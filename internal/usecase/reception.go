@@ -46,9 +46,15 @@ func (u *ReceptionUsecase) Create(pvzID string) (domain.Reception, error) {
 }
 
 func (u *ReceptionUsecase) CloseLast(pvzID string) (domain.Reception, error) {
+	last, err := u.repo.GetLastReception(pvzID)
+	if err != nil || last == nil || last.Status != "in_progress" {
+		return domain.Reception{}, errors.New("no active reception to close")
+	}
+
 	rec, err := u.repo.CloseLastReception(pvzID)
 	if err != nil {
 		return domain.Reception{}, err
 	}
+
 	return *rec, nil
 }
