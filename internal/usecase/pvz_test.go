@@ -18,6 +18,11 @@ func (m *mockPVZRepo) Create(pvz domain.PVZ) (domain.PVZ, error) {
 	return args.Get(0).(domain.PVZ), args.Error(1)
 }
 
+func (m *mockPVZRepo) GetAll() ([]domain.PVZ, error) {
+	args := m.Called()
+	return args.Get(0).([]domain.PVZ), args.Error(1)
+}
+
 func TestPVZUsecase_Create(t *testing.T) {
 	now := time.Now()
 

@@ -38,22 +38,22 @@ func TestAuthUsecase_Register(t *testing.T) {
 		expectError bool
 	}{
 		{
-			name:     "successful registration with client role",
+			name:     "successful registration with employee role",
 			email:    "test@example.com",
 			password: "securepass",
-			role:     "client",
+			role:     "employee",
 			mockSetup: func(m *mockUserRepo) {
 				expectedUser := domain.User{
 					ID:       "mocked-uuid",
 					Email:    "test@example.com",
 					Password: "hashed-password",
-					Role:     "client",
+					Role:     "employee",
 				}
 
 				m.On("Create", mock.MatchedBy(func(u domain.User) bool {
 					err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte("securepass"))
 					return u.Email == "test@example.com" &&
-						u.Role == "client" &&
+						u.Role == "employee" &&
 						err == nil &&
 						u.ID != ""
 				})).Return(expectedUser, nil)
@@ -62,7 +62,7 @@ func TestAuthUsecase_Register(t *testing.T) {
 				ID:       "mocked-uuid",
 				Email:    "test@example.com",
 				Password: "hashed-password",
-				Role:     "client",
+				Role:     "employee",
 			},
 			expectError: false,
 		},
@@ -105,10 +105,10 @@ func TestAuthUsecase_Register(t *testing.T) {
 			name:     "database error",
 			email:    "test@example.com",
 			password: "securepass",
-			role:     "client",
+			role:     "employee",
 			mockSetup: func(m *mockUserRepo) {
 				m.On("Create", mock.MatchedBy(func(u domain.User) bool {
-					return u.Email == "test@example.com" && u.Role == "client"
+					return u.Email == "test@example.com" && u.Role == "employee"
 				})).Return(domain.User{}, errors.New("database error"))
 			},
 			expected:    domain.User{},
@@ -157,7 +157,7 @@ func TestAuthUsecase_Login(t *testing.T) {
 					ID:       "user-uuid",
 					Email:    "existing@example.com",
 					Password: string(hashedPassword),
-					Role:     "client",
+					Role:     "employee",
 				}, nil)
 			},
 			expectToken: true,
@@ -182,7 +182,7 @@ func TestAuthUsecase_Login(t *testing.T) {
 					ID:       "user-uuid",
 					Email:    "existing@example.com",
 					Password: string(hashedPassword),
-					Role:     "client",
+					Role:     "employee",
 				}, nil)
 			},
 			expectToken: false,

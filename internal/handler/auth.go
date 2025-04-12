@@ -18,7 +18,7 @@ type TokenResponse struct {
 
 func DummyLogin(w http.ResponseWriter, r *http.Request) {
 	var req DummyLoginRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || (req.Role != "client" && req.Role != "moderator") {
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || (req.Role != "employee" && req.Role != "moderator") {
 		http.Error(w, "invalid role", http.StatusBadRequest)
 		return
 	}

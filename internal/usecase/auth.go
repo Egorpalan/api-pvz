@@ -23,7 +23,7 @@ func NewAuthUsecase(r UserRepo) *AuthUsecase {
 }
 
 func (a *AuthUsecase) Register(email, password, role string) (domain.User, error) {
-	if role != "client" && role != "moderator" {
+	if role != "employee" && role != "moderator" {
 		return domain.User{}, errors.New("invalid role")
 	}
 

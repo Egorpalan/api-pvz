@@ -81,3 +81,9 @@ func (r *PVZRepository) GetWithReceptionsAndProducts(start, end *time.Time, page
 
 	return result, nil
 }
+
+func (r *PVZRepository) GetAll() ([]domain.PVZ, error) {
+	var pvzs []domain.PVZ
+	err := r.db.Select(&pvzs, "SELECT * FROM pvz")
+	return pvzs, err
+}

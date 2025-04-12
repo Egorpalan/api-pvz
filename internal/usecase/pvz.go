@@ -17,6 +17,7 @@ var allowedCities = map[string]bool{
 
 type PVZRepo interface {
 	Create(pvz domain.PVZ) (domain.PVZ, error)
+	GetAll() ([]domain.PVZ, error)
 }
 
 type PVZUsecase struct {
@@ -47,4 +48,8 @@ type PVZReadRepo interface {
 
 func (u *PVZUsecase) GetAllWithDetails(start, end *time.Time, page, limit int) ([]dto.PVZDTO, error) {
 	return u.repo.(PVZReadRepo).GetWithReceptionsAndProducts(start, end, page, limit)
+}
+
+func (u *PVZUsecase) GetAll() ([]domain.PVZ, error) {
+	return u.repo.GetAll()
 }
