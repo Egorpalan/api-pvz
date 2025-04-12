@@ -76,7 +76,17 @@ make test-integration
 * Метрики HTTP запросов (время ответа, количество запросов)
 
 
-Вот файл в формате .md, содержащий описание всех endpoint-ов вашего API. Сохрани его как, например, api_endpoints.md в корне проекта:
+## grpc
+
+Для выполнения grpc-запроса введите в терминале
+```bash
+grpcurl -plaintext -proto internal/grpc/pvz_v1/pvz.proto localhost:3000 pvz.v1.PVZService/GetPVZList
+```
+
+
+## Кодогенерация
+
+Для кодогенерации использовался пакет [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen)
 
 ## API Endpoints
 
@@ -137,14 +147,3 @@ Authorization: Bearer <your_token>
 Удаление последнего добавленного товара (по LIFO). Только в незакрытой приёмке.
 
 
-## grpc
-
-Для выполнения grpc-запроса введите в терминале
-```bash
-grpcurl -plaintext -proto internal/grpc/pvz_v1/pvz.proto localhost:3000 pvz.v1.PVZService/GetPVZList
-```
-
-
-## Кодогенерация
-
-Для кодогенерации использовался пакет [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen)
